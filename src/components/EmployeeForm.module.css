@@ -1,0 +1,22 @@
+
+.form {
+  border: 1px solid #ccc;
+  padding: 1rem;
+  margin-bottom: 1.5rem;
+}
+.heading {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.input {
+  padding: 0.25rem;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid #ccc;
+}
+.submitBtn {
+  background-color: #16a34a;
+  color: white;
+  padding: 0.25rem 0.75rem;
+}
