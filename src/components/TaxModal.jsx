@@ -1,10 +1,20 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./TaxModal.module.css";
 
-const TaxModal = ({ employee, taxes, onClose, onSave }) => {
-  const [selected, setSelected] = React.useState(employee.taxes || []);
-  const [rate, setRate] = React.useState(employee.rate || 0);
-  const [hours, setHours] = React.useState(employee.hours || 0);
+const TaxModal = ({ employee, taxes, extras, onClose, onSave }) => {
+  const [selected, setSelected] = useState([]);
+  const [rate, setRate] = useState(employee.rate || 0);
+  const [extraValues, setExtraValues] = useState(employee.extraBenefits || {});
+
+  useEffect(() => {
+    const initialTaxes =
+      !employee.taxes || employee.taxes.length === 0
+        ? taxes.map((t) => t.id)
+        : employee.taxes;
+
+    setSelected(initialTaxes);
+    setExtraValues(employee.extraBenefits || {});
+  }, [employee, taxes]);
 
   const toggle = (id) => {
     setSelected((prev) =>
@@ -17,7 +27,7 @@ const TaxModal = ({ employee, taxes, onClose, onSave }) => {
       ...employee,
       taxes: selected,
       rate: parseFloat(rate),
-      hours: parseFloat(hours),
+      extraBenefits: extraValues,
     });
     onClose();
   };
@@ -28,7 +38,7 @@ const TaxModal = ({ employee, taxes, onClose, onSave }) => {
         <h3>Податки для {employee.name}</h3>
 
         <div className={styles.field}>
-          <label>Ставка за годину</label>
+          <label>Ставка</label>
           <input
             type="number"
             value={rate}
@@ -37,25 +47,39 @@ const TaxModal = ({ employee, taxes, onClose, onSave }) => {
         </div>
 
         <div className={styles.field}>
-          <label>Кількість годин</label>
-          <input
-            type="number"
-            value={hours}
-            onChange={(e) => setHours(e.target.value)}
-          />
-        </div>
-
-        <div className={styles.field}>
-          <label>Застосувати податки</label>
-          <div>
+          <label>Застосувати податки:</label>
+          <div className={styles.labelRow}>
             {taxes.map((t) => (
               <label key={t.id} className={styles.checkbox}>
+                <span>
+                  {t.name} ({t.rate}%)
+                </span>
                 <input
                   type="checkbox"
                   checked={selected.includes(t.id)}
                   onChange={() => toggle(t.id)}
                 />
-                {t.name} ({t.rate}%)
+              </label>
+            ))}
+          </div>
+        </div>
+
+        <div className={styles.field}>
+          <label>Додаткові нарахування:</label>
+          <div className={styles.labelRow}>
+            {extras.map((extra) => (
+              <label key={extra.id} className={styles.checkbox}>
+                <span>{extra.name}</span>
+                <input
+                  type="number"
+                  value={extraValues[extra.id] || ""}
+                  onChange={(e) =>
+                    setExtraValues((prev) => ({
+                      ...prev,
+                      [extra.id]: parseFloat(e.target.value) || 0,
+                    }))
+                  }
+                />
               </label>
             ))}
           </div>

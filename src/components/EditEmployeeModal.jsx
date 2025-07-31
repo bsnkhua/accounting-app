@@ -5,9 +5,10 @@ const EditEmployeeModal = ({ employee, onClose, onSave }) => {
   const [name, setName] = useState(employee.name);
   const [position, setPosition] = useState(employee.position);
   const [code, setCode] = useState(employee.code || "");
+  const [rate, setRate] = useState(employee.rate || 0);
 
   const handleSave = () => {
-    onSave({ ...employee, name, position, code });
+    onSave({ ...employee, name, position, code, rate: parseFloat(rate) });
     onClose();
   };
 
@@ -15,6 +16,7 @@ const EditEmployeeModal = ({ employee, onClose, onSave }) => {
     <div className={styles.overlay}>
       <div className={styles.modal}>
         <h3>Редагувати працівника</h3>
+
         <div className={styles.field}>
           <label>П.І.Б</label>
           <input
@@ -23,6 +25,7 @@ const EditEmployeeModal = ({ employee, onClose, onSave }) => {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
+
         <div className={styles.field}>
           <label>Посада</label>
           <input
@@ -31,6 +34,7 @@ const EditEmployeeModal = ({ employee, onClose, onSave }) => {
             onChange={(e) => setPosition(e.target.value)}
           />
         </div>
+
         <div className={styles.field}>
           <label>Табельний номер</label>
           <input
@@ -39,6 +43,16 @@ const EditEmployeeModal = ({ employee, onClose, onSave }) => {
             onChange={(e) => setCode(e.target.value)}
           />
         </div>
+
+        <div className={styles.field}>
+          <label>Ставка</label>
+          <input
+            type="number"
+            value={rate}
+            onChange={(e) => setRate(e.target.value)}
+          />
+        </div>
+
         <div className={styles.actions}>
           <button onClick={handleSave}>Зберегти</button>
           <button onClick={onClose}>Скасувати</button>

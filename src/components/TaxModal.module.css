@@ -8,29 +8,88 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 999;
 }
+
 .modal {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 6px;
-  min-width: 300px;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 }
-.checkbox {
-  display: block;
-  margin-bottom: 0.5rem;
-}
-.actions {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-}
+
 .field {
-  margin-bottom: 1rem;
-  display: flex;
-  flex-direction: column;
+  margin-bottom: 1.5rem;
 }
 
 .field label {
   font-weight: bold;
-  margin-bottom: 4px;
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  color: #1f2937;
+  display: block;
+}
+
+.field input[type="number"],
+.field input[type="text"] {
+  width: 100%;
+  padding: 0.5rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 1rem;
+}
+
+.checkbox {
+  display: flex !important;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  padding: 0.25rem 0;
+}
+
+.checkbox input[type="number"] {
+  width: 100px;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.actions button {
+  padding: 0.5rem 1rem;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  border: none;
+}
+
+.actions button:first-child {
+  background-color: #3b82f6;
+  color: white;
+}
+
+.actions button:last-child {
+  background-color: #e5e7eb;
+  color: #374151;
+}
+
+h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #1e40af;
+}
+
+.labelRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding-left: 0.25rem;
 }

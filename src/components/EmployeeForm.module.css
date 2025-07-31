@@ -1,22 +1,37 @@
-
 .form {
-  border: 1px solid #ccc;
-  padding: 1rem;
-  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 400px;
 }
-.heading {
+
+.form h2 {
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
 }
-.input {
-  padding: 0.25rem;
-  margin-right: 0.5rem;
-  margin-bottom: 0.5rem;
-  border: 1px solid #ccc;
+
+.form label {
+  font-weight: bold;
+  margin-bottom: 0.25rem;
 }
-.submitBtn {
-  background-color: #16a34a;
+
+.form input {
+  padding: 0.4rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.form button {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background-color: #2563eb;
   color: white;
-  padding: 0.25rem 0.75rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form button:hover {
+  background-color: #1d4ed8;
 }

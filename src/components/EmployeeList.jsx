@@ -3,16 +3,30 @@ import TaxModal from "./TaxModal";
 import EditEmployeeModal from "./EditEmployeeModal";
 import styles from "./EmployeeList.module.css";
 
-const EmployeeList = ({ employees, deleteEmployee, updateEmployee, taxes, showDelete, simpleView }) => {
+const EmployeeList = ({
+  employees,
+  deleteEmployee,
+  updateEmployee,
+  taxes,
+  extras,
+  showDelete,
+  simpleView,
+}) => {
   const [modalEmployee, setModalEmployee] = useState(null);
   const [editModal, setEditModal] = useState(null);
 
   const calculateNet = (emp) => {
-    const gross = emp.rate * emp.hours;
+    const extraSum = Object.values(emp.extraBenefits || {}).reduce(
+      (acc, val) => acc + val,
+      0
+    );
+    const gross = emp.rate + extraSum;
+
     const taxSum = emp.taxes?.reduce((sum, id) => {
       const tax = taxes.find((t) => t.id === id);
       return tax ? sum + (gross * tax.rate) / 100 : sum;
     }, 0);
+
     return (gross - taxSum).toFixed(2);
   };
 
@@ -22,13 +36,12 @@ const EmployeeList = ({ employees, deleteEmployee, updateEmployee, taxes, showDe
       <table className={styles.table}>
         <thead>
           <tr>
-            <th>Ім’я</th>
-            <th>Посада</th>
+            <th>П.І.Б</th>
             {!simpleView && (
               <>
-                <th>Брутто</th>
-                <th>Податки</th>
-                <th>Нетто</th>
+                <th>Нараховано всього</th>
+                <th>Утримано всього</th>
+                <th>Дохід</th>
               </>
             )}
             {showDelete && <th>Дії</th>}
@@ -43,15 +56,28 @@ const EmployeeList = ({ employees, deleteEmployee, updateEmployee, taxes, showDe
               }}
             >
               <td>{emp.name}</td>
-              <td>{emp.position}</td>
               {!simpleView && (
                 <>
-                  <td>{(emp.rate * emp.hours).toFixed(2)}</td>
                   <td>
-                    {emp.taxes?.map((id) => {
-                      const tax = taxes.find((t) => t.id === id);
-                      return tax ? `${tax.name} (${tax.rate}%) ` : "";
-                    })}
+                    {(() => {
+                      const extras = Object.values(
+                        emp.extraBenefits || {}
+                      ).reduce((sum, val) => sum + val, 0);
+                      return (emp.rate + extras).toFixed(2);
+                    })()}
+                  </td>
+                  <td>
+                    {(() => {
+                      const extras = Object.values(
+                        emp.extraBenefits || {}
+                      ).reduce((sum, val) => sum + val, 0);
+                      const gross = emp.rate + extras;
+                      const taxSum = emp.taxes?.reduce((sum, id) => {
+                        const tax = taxes.find((t) => t.id === id);
+                        return tax ? sum + (gross * tax.rate) / 100 : sum;
+                      }, 0);
+                      return taxSum?.toFixed(2);
+                    })()}
                   </td>
                   <td>{calculateNet(emp)}</td>
                 </>
@@ -78,6 +104,7 @@ const EmployeeList = ({ employees, deleteEmployee, updateEmployee, taxes, showDe
         <TaxModal
           employee={modalEmployee}
           taxes={taxes}
+          extras={extras}
           onClose={() => setModalEmployee(null)}
           onSave={updateEmployee}
         />
